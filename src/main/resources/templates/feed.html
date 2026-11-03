@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Лента — KADAM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="feed-page">
+
+<div class="social-layout">
+
+    <!-- БОКОВОЕ МЕНЮ -->
+
+    <aside class="social-sidebar">
+
+        <a href="/" class="social-logo">
+            ✳ KADAM<span>.</span>
+        </a>
+
+        <div class="social-menu">
+
+            <a href="/feed" class="active">
+                <span>🏠</span> Лента
+            </a>
+
+            <a href="/#directions">
+                <span>💼</span> Возможности
+            </a>
+
+            <a href="/#directions">
+                <span>🎓</span> Практика
+            </a>
+
+            <a href="/#directions">
+                <span>💜</span> Волонтёрство
+            </a>
+
+            <a href="/#directions">
+                <span>🤝</span> Помощь
+            </a>
+
+            <a href="/dashboard">
+                <span>👤</span> Мой кабинет
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="mini-profile">
+                <div class="mini-avatar">👤</div>
+
+                <div>
+                    <strong>Мой аккаунт</strong>
+                    <small th:text="${currentUser}">
+                        user@example.com
+                    </small>
+                </div>
+            </div>
+
+            <form action="/logout" method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button type="submit" class="logout-button">
+                    Выйти
+                </button>
+
+            </form>
+        </div>
+
+    </aside>
+
+    <!-- ЦЕНТРАЛЬНАЯ ЛЕНТА -->
+
+    <main class="social-main">
+
+        <div class="feed-header">
+
+            <div>
+                <span class="feed-eyebrow">
+                    ТВОЁ СООБЩЕСТВО
+                </span>
+
+                <h1>Лента KADAM ✨</h1>
+
+                <p>Делись моментами, идеями и новыми открытиями.</p>
+            </div>
+
+            <div class="header-decoration">✳</div>
+
+        </div>
+
+        <!-- КАТЕГОРИИ -->
+
+        <div class="category-chips">
+
+            <a href="/feed" class="chip selected">
+                ✨ Для тебя
+            </a>
+
+            <a href="/#directions" class="chip blue">
+                💼 Карьера
+            </a>
+
+            <a href="/#directions" class="chip purple">
+                💜 Волонтёрство
+            </a>
+
+            <a href="/#directions" class="chip orange">
+                🤝 Помощь
+            </a>
+
+        </div>
+
+        <!-- СОЗДАТЬ ПУБЛИКАЦИЮ -->
+
+        <section class="create-post-card">
+
+            <div class="create-post-heading">
+                <div class="post-avatar">✨</div>
+
+                <div>
+                    <h2>Есть чем поделиться?</h2>
+                    <p>Расскажи сообществу KADAM!</p>
+                </div>
+            </div>
+
+            <form th:action="@{/feed/create}"
+                  method="post"
+                  class="create-post-form">
+
+                <textarea
+                        name="content"
+                        id="postText"
+                        maxlength="2000"
+                        required
+                        placeholder="Что интересного произошло сегодня?"
+                        rows="4"></textarea>
+
+                <div class="post-form-bottom">
+
+                    <span id="characterCounter">
+                        0 / 2000
+                    </span>
+
+                    <button type="submit" class="animated-post-button">
+                        <span>Опубликовать</span>
+                        <span>↗</span>
+                    </button>
+
+                </div>
+
+            </form>
+
+            <div class="feed-message success"
+                 th:if="${success}"
+                 th:text="${success}">
+            </div>
+
+            <div class="feed-message error"
+                 th:if="${error}"
+                 th:text="${error}">
+            </div>
+
+        </section>
+
+        <!-- СПИСОК ПУБЛИКАЦИЙ -->
+
+        <section class="posts-section">
+
+            <div class="posts-heading">
+                <h2>Свежие публикации</h2>
+                <span>🌈 Сообщество</span>
+            </div>
+
+            <!-- ЕСЛИ ПУБЛИКАЦИЙ НЕТ -->
+
+            <div class="empty-feed"
+                 th:if="${#lists.isEmpty(posts)}">
+
+                <div class="empty-illustration">🚀</div>
+
+                <h3>Здесь начинается твоя история!</h3>
+
+                <p>
+                    Пока публикаций нет.
+                    Расскажи о себе, поделись идеей
+                    или напиши о своём первом опыте.
+                </p>
+
+            </div>
+
+            <!-- ПУБЛИКАЦИИ ИЗ SQL SERVER -->
+
+            <article class="social-post"
+                     th:each="post : ${posts}">
+
+                <div class="social-post-header">
+
+                    <div class="post-user-avatar">
+                        👤
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong th:text="${post.authorEmail}">
+                            Пользователь
+                        </strong>
+
+                        <small th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}">
+                            30.10.2026
+                        </small>
+
+                    </div>
+
+                    <span class="post-type-badge">
+                        ✨ Публикация
+                    </span>
+
+                </div>
+
+                <div class="social-post-content"
+                     th:text="${post.content}">
+                    Текст публикации
+                </div>
+
+                <div class="social-post-footer">
+
+                    <span class="post-footer-info">
+                        💙 KADAM Community
+                    </span>
+
+                    <span class="post-footer-info">
+                        🌍 Открытая публикация
+                    </span>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    <!-- ПРАВАЯ КОЛОНКА -->
+
+    <aside class="social-right">
+
+        <div class="welcome-widget">
+
+            <div class="widget-emoji">🌈</div>
+
+            <h3>Добро пожаловать в KADAM!</h3>
+
+            <p>
+                Здесь идеи превращаются в возможности,
+                а маленькие шаги — в большие достижения.
+            </p>
+
+            <a href="/#directions">
+                Исследовать возможности ↗
+            </a>
+
+        </div>
+
+        <div class="tips-widget">
+
+            <h3>✨ Идеи для публикации</h3>
+
+            <div class="tip">
+                🎓 Расскажи о своей специальности
+            </div>
+
+            <div class="tip">
+                💼 Поделись опытом стажировки
+            </div>
+
+            <div class="tip">
+                💜 Расскажи о добром деле
+            </div>
+
+            <div class="tip">
+                🚀 Найди единомышленников
+            </div>
+
+        </div>
+
+        <div class="right-footer">
+            KADAM © 2026
+
+            <span>
+                Бир кадам — миң мүмкүнчүлүк
+            </span>
+        </div>
+
+    </aside>
+
+</div>
+
+<script>
+
+    const postText = document.getElementById("postText");
+
+    const characterCounter =
+        document.getElementById("characterCounter");
+
+    postText.addEventListener("input", function () {
+
+        characterCounter.textContent =
+            postText.value.length + " / 2000";
+
+    });
+
+    document.querySelectorAll(".animated-post-button").forEach(button => {
+
+        button.addEventListener("pointerdown", () => {
+            button.classList.add("pressed");
+        });
+
+        button.addEventListener("pointerup", () => {
+            button.classList.remove("pressed");
+        });
+
+        button.addEventListener("pointerleave", () => {
+            button.classList.remove("pressed");
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Создать объявление — KADAM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="opportunities-page">
+
+<header class="opportunities-header">
+
+    <a href="/" class="opportunities-logo">
+        ✳ KADAM<span>.</span>
+    </a>
+
+    <nav>
+        <a href="/opportunities">Возможности</a>
+        <a href="/dashboard">Мой кабинет</a>
+    </nav>
+
+</header>
+
+<main class="create-opportunity-container">
+
+    <div class="create-opportunity-heading">
+
+        <span>✨ ДЛЯ ОРГАНИЗАЦИЙ</span>
+
+        <h1>Создайте новую возможность</h1>
+
+        <p>
+            Расскажите студентам и волонтёрам
+            о вашем предложении.
+        </p>
+
+    </div>
+
+    <form th:action="@{/opportunities/create}"
+          method="post"
+          class="opportunity-form">
+
+        <div th:if="${error}"
+             class="opportunity-alert error"
+             th:text="${error}">
+        </div>
+
+        <label for="title">
+            Название объявления
+        </label>
+
+        <input
+                type="text"
+                name="title"
+                id="title"
+                maxlength="150"
+                required
+                placeholder="Например: Стажировка Java-разработчика">
+
+        <label for="category">
+            Направление
+        </label>
+
+        <select name="category" id="category" required>
+
+            <option value="">Выберите направление</option>
+
+            <option value="INTERNSHIP">
+                💼 Стажировка
+            </option>
+
+            <option value="PRACTICE">
+                🎓 Практика
+            </option>
+
+            <option value="VOLUNTEERING">
+                💜 Волонтёрство
+            </option>
+
+            <option value="SOCIAL_HELP">
+                🤝 Социальная помощь
+            </option>
+
+        </select>
+
+        <label for="city">
+            Город
+        </label>
+
+        <input
+                type="text"
+                name="city"
+                id="city"
+                maxlength="100"
+                required
+                placeholder="Например: Бишкек">
+
+        <label for="description">
+            Подробное описание
+        </label>
+
+        <textarea
+                name="description"
+                id="description"
+                rows="8"
+                maxlength="3000"
+                required
+                placeholder="Расскажите об условиях, задачах и требованиях..."></textarea>
+
+        <div class="opportunity-form-actions">
+
+            <a href="/opportunities">
+                Отмена
+            </a>
+
+            <button type="submit">
+                Опубликовать ↗
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+</body>
+</html>

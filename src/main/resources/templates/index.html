@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KADAM — Бир кадам, миң мүмкүнчүлүк</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/kadam.css}">
+
+    <style>
+        /* Окно выбора языка */
+
+        .language-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 27, 58, 0.78);
+            backdrop-filter: blur(18px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .language-overlay.hidden {
+            display: none;
+        }
+
+        .language-box {
+            width: 100%;
+            max-width: 490px;
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 45px 35px;
+            text-align: center;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
+            animation: languageAppear .55s ease;
+        }
+
+        .language-brand {
+            font-size: 39px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: #24315a;
+            margin-bottom: 12px;
+        }
+
+        .language-brand span {
+            color: #536dff;
+        }
+
+        .language-box h2 {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .language-box p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #7b879c;
+            margin-bottom: 29px;
+        }
+
+        .language-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .language-option {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 17px;
+            padding: 18px 20px;
+            border-radius: 17px;
+            background: #f6f8ff;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-align: left;
+            transition: .25s;
+            font-family: inherit;
+        }
+
+        .language-option:hover {
+            background: #edf1ff;
+            border-color: #536dff;
+            transform: translateY(-3px);
+        }
+
+        .language-flag {
+            font-size: 28px;
+        }
+
+        .language-option strong {
+            display: block;
+            font-size: 16px;
+            color: #253250;
+        }
+
+        .language-option small {
+            display: block;
+            color: #8994a9;
+            margin-top: 4px;
+        }
+
+        .language-chevron {
+            margin-left: auto;
+            font-size: 19px;
+            color: #536dff;
+        }
+
+        @keyframes languageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .language-box {
+                padding: 32px 22px;
+                border-radius: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ВЫБОР ЯЗЫКА -->
+
+<div id="languageOverlay" class="language-overlay hidden">
+
+    <div class="language-box">
+
+        <div class="language-brand">
+            KADAM<span>.</span>
+        </div>
+
+        <h2>Тилди тандаңыз</h2>
+
+        <p>
+            Выберите удобный язык / Choose your language
+        </p>
+
+        <div class="language-options">
+
+            <button class="language-option" onclick="setLanguage('ky')">
+                <span class="language-flag">🇰🇬</span>
+
+                <span>
+                    <strong>Кыргызча</strong>
+                    <small>Кыргыз тили</small>
+                </span>
+
+                <span class="language-chevron">↗</span>
+            </button>
+
+            <button class="language-option" onclick="setLanguage('ru')">
+                <span class="language-flag">🇷🇺</span>
+
+                <span>
+                    <strong>Русский</strong>
+                    <small>Русский язык</small>
+                </span>
+
+                <span class="language-chevron">↗</span>
+            </button>
+
+            <button class="language-option" onclick="setLanguage('en')">
+                <span class="language-flag">🇬🇧</span>
+
+                <span>
+                    <strong>English</strong>
+                    <small>English language</small>
+                </span>
+
+                <span class="language-chevron">↗</span>
+            </button>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- МЕНЮ -->
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+        <span class="logo-symbol">✳</span>
+        KADAM<span class="logo-dot">.</span>
+    </a>
+
+    <nav class="nav-links" id="navigation">
+        <a href="/feed">Лента ✨</a>
+        <a href="#home" data-i18n="navHome">Главная</a>
+        <a href="#directions" data-i18n="navOpportunities">Возможности</a>
+        <a href="#how" data-i18n="navHow">Как работает</a>
+        <a href="#about" data-i18n="navAbout">Организациям</a>
+    </nav>
+
+    <div class="nav-actions">
+
+        <button class="language-switch"
+                onclick="showLanguageSelector()"
+                type="button">
+            🌐 <span id="currentLanguage">RU</span> ▾
+        </button>
+
+        <a th:href="@{/login}" href="/login"
+           class="login-btn"
+           data-i18n="login">
+            Войти
+        </a>
+
+        <a th:href="@{/register}" href="/register"
+           class="register-btn"
+           data-i18n="register">
+            Регистрация ↗
+        </a>
+    </div>
+
+    <button class="menu-btn"
+            type="button"
+            onclick="toggleMenu()"
+            aria-label="Открыть меню"
+            aria-controls="navigation"
+            aria-expanded="false"
+            id="menuButton">
+        ☰
+    </button>
+
+</header>
+
+
+<main>
+
+    <!-- ГЛАВНАЯ -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-text">
+
+            <div class="hero-badge">
+                <span class="badge-circle"></span>
+                <span data-i18n="badge">ПЛАТФОРМА ВОЗМОЖНОСТЕЙ</span>
+            </div>
+
+            <h1 data-i18n="heroTitle">
+                Один шаг — тысяча возможностей.
+            </h1>
+
+            <p data-i18n="heroDescription">
+                Найди стажировку, пройди практику,
+                участвуй в волонтёрских проектах
+                и помогай людям. Начни свой путь вместе с KADAM.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a th:href="@{/register}" href="/register"
+                   class="primary-btn"
+                   data-i18n="heroButton">
+                    Начать бесплатно ↗
+                </a>
+
+                <a href="#directions"
+                   class="secondary-btn"
+                   data-i18n="exploreButton">
+                    Смотреть возможности →
+                </a>
+
+            </div>
+
+            <div class="hero-bottom">
+                <div class="avatar-group">
+                    <span>👩🏻‍💻</span>
+                    <span>👨🏻‍🎓</span>
+                    <span>👩🏽‍🎨</span>
+                    <span>👨🏻‍💼</span>
+                </div>
+                <div>
+                    <strong data-i18n="communityTitle">
+                        Сообщество возможностей
+                    </strong>
+                    <small data-i18n="communitySubtitle">
+                        Развивайся и помогай вместе с нами
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+
+            <div class="visual-circle circle-one"></div>
+            <div class="visual-circle circle-two"></div>
+            <div class="visual-circle circle-three"></div>
+
+            <div class="main-visual-card">
+                <div class="visual-icon">✳</div>
+
+                <h2>KADAM</h2>
+
+                <p data-i18n="visualText">
+                    Твой первый шаг к большим возможностям
+                </p>
+
+                <div class="visual-line"></div>
+
+                <span data-i18n="visualLabel">
+                РАЗВИВАЙСЯ • ПОМОГАЙ • ДЕЙСТВУЙ
+            </span>
+            </div>
+
+            <div class="floating-card float-one">
+                <div class="float-icon blue-icon">💼</div>
+                <div>
+                    <strong data-i18n="floatInternship">Стажировки</strong>
+                    <small data-i18n="floatInternshipSmall">Новый опыт</small>
+                </div>
+            </div>
+
+            <div class="floating-card float-two">
+                <div class="float-icon purple-icon">💜</div>
+                <div>
+                    <strong data-i18n="floatVolunteer">Волонтёрство</strong>
+                    <small data-i18n="floatVolunteerSmall">Добрые дела</small>
+                </div>
+            </div>
+
+            <div class="floating-card float-three">
+                <div class="float-icon orange-icon">🤝</div>
+                <div>
+                    <strong data-i18n="floatHelp">Помощь людям</strong>
+                    <small data-i18n="floatHelpSmall">Поддержка рядом</small>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- НАПРАВЛЕНИЯ -->
+
+    <section class="directions section" id="directions">
+
+        <div class="section-heading">
+
+        <span class="section-label" data-i18n="directionsLabel">
+            НАПРАВЛЕНИЯ
+        </span>
+
+            <h2 data-i18n="directionsTitle">
+                Найди свою возможность
+            </h2>
+
+            <p data-i18n="directionsDescription">
+                Выбери то, что тебе действительно интересно.
+            </p>
+
+        </div>
+
+        <div class="direction-grid">
+
+            <article class="direction-card internship">
+                <div class="direction-top">
+                    <span class="direction-icon">💼</span>
+                    <span class="direction-arrow">↗</span>
+                </div>
+
+                <div class="direction-content">
+                <span class="card-label" data-i18n="internshipLabel">
+                    КАРЬЕРА
+                </span>
+                    <h3 data-i18n="internshipTitle">Стажировки</h3>
+                    <p data-i18n="internshipDescription">
+                        Получай профессиональный опыт и делай
+                        первые шаги в карьере.
+                    </p>
+
+                    <a th:href="@{/register}" href="/register"
+                       data-i18n="cardButton">
+                        Присоединиться →
+                    </a>
+                </div>
+
+                <div class="card-decoration"></div>
+            </article>
+
+            <article class="direction-card practice">
+                <div class="direction-top">
+                    <span class="direction-icon">🎓</span>
+                    <span class="direction-arrow">↗</span>
+                </div>
+
+                <div class="direction-content">
+                <span class="card-label" data-i18n="practiceLabel">
+                    ОБРАЗОВАНИЕ
+                </span>
+                    <h3 data-i18n="practiceTitle">Практика</h3>
+                    <p data-i18n="practiceDescription">
+                        Найди место для учебной или
+                        производственной практики.
+                    </p>
+
+                    <a th:href="@{/register}" href="/register"
+                       data-i18n="cardButton">
+                        Присоединиться →
+                    </a>
+                </div>
+
+                <div class="card-decoration"></div>
+            </article>
+
+            <article class="direction-card volunteer">
+                <div class="direction-top">
+                    <span class="direction-icon">💜</span>
+                    <span class="direction-arrow">↗</span>
+                </div>
+
+                <div class="direction-content">
+                <span class="card-label" data-i18n="volunteerLabel">
+                    ДОБРЫЕ ДЕЛА
+                </span>
+                    <h3 data-i18n="volunteerTitle">Волонтёрство</h3>
+                    <p data-i18n="volunteerDescription">
+                        Участвуй в социальных проектах
+                        и делай мир лучше.
+                    </p>
+
+                    <a th:href="@{/register}" href="/register"
+                       data-i18n="cardButton">
+                        Присоединиться →
+                    </a>
+                </div>
+
+                <div class="card-decoration"></div>
+            </article>
+
+            <article class="direction-card help">
+                <div class="direction-top">
+                    <span class="direction-icon">🤝</span>
+                    <span class="direction-arrow">↗</span>
+                </div>
+
+                <div class="direction-content">
+                <span class="card-label" data-i18n="helpLabel">
+                    ПОДДЕРЖКА
+                </span>
+                    <h3 data-i18n="helpTitle">Социальная помощь</h3>
+                    <p data-i18n="helpDescription">
+                        Помогай нуждающимся и находи
+                        поддержку, когда она необходима.
+                    </p>
+
+                    <a th:href="@{/register}" href="/register"
+                       data-i18n="cardButton">
+                        Присоединиться →
+                    </a>
+                </div>
+
+                <div class="card-decoration"></div>
+            </article>
+
+        </div>
+    </section>
+
+
+    <!-- КАК РАБОТАЕТ -->
+
+    <section class="how-section section" id="how">
+
+        <div class="section-heading">
+
+        <span class="section-label" data-i18n="howLabel">
+            ТВОЙ ПУТЬ
+        </span>
+
+            <h2 data-i18n="howTitle">
+                Начать проще, чем кажется
+            </h2>
+
+        </div>
+
+        <div class="steps">
+
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-icon">👤</div>
+
+                <h3 data-i18n="step1Title">Создай профиль</h3>
+
+                <p data-i18n="step1Description">
+                    Зарегистрируйся и расскажи о себе.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-icon">🔎</div>
+
+                <h3 data-i18n="step2Title">Выбери направление</h3>
+
+                <p data-i18n="step2Description">
+                    Найди подходящие возможности.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-icon">🚀</div>
+
+                <h3 data-i18n="step3Title">Сделай первый шаг</h3>
+
+                <p data-i18n="step3Description">
+                    Начни развиваться и помогать другим.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ОРГАНИЗАЦИИ -->
+
+    <section class="organization-section section" id="about">
+
+        <div class="organization-content">
+
+        <span class="organization-badge" data-i18n="organizationLabel">
+            ДЛЯ ОРГАНИЗАЦИЙ
+        </span>
+
+            <h2 data-i18n="organizationTitle">
+                Находите людей, которые помогут вашему делу.
+            </h2>
+
+            <p data-i18n="organizationDescription">
+                Размещайте возможности для студентов,
+                приглашайте волонтёров и находите
+                участников для своих инициатив.
+            </p>
+
+            <a th:href="@{/register}" href="/register"
+               class="organization-button"
+               data-i18n="organizationButton">
+                Создать профиль организации ↗
+            </a>
+
+        </div>
+
+        <div class="organization-art">
+
+            <div class="organization-orb">
+                <span>✳</span>
+            </div>
+
+            <div class="organization-mini-card">
+                ✨ KADAM
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ФИНАЛ -->
+
+    <section class="final-section">
+
+    <span data-i18n="finalLabel">
+        НАЧНИ СЕГОДНЯ
+    </span>
+
+        <h2 data-i18n="finalTitle">
+            Большие перемены начинаются с одного шага.
+        </h2>
+
+        <p data-i18n="finalDescription">
+            Открывай новые возможности
+            и становись частью сообщества KADAM.
+        </p>
+
+        <a th:href="@{/register}" href="/register"
+           class="final-button"
+           data-i18n="finalButton">
+            Присоединиться к KADAM ↗
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div>
+        <a href="/" class="logo">
+            ✳ KADAM<span class="logo-dot">.</span>
+        </a>
+
+        <p data-i18n="footerDescription">
+            Один шаг — тысяча возможностей.
+        </p>
+    </div>
+
+    <div class="footer-links">
+        <a href="#home" data-i18n="navHome">Главная</a>
+        <a href="#directions" data-i18n="navOpportunities">Возможности</a>
+        <a href="#how" data-i18n="navHow">Как работает</a>
+        <a href="/login" data-i18n="login">Войти</a>
+    </div>
+
+    <div class="footer-copy">
+        © 2026 KADAM
+    </div>
+
+</footer>
+
+
+<style>
+    .language-switch {
+        border: 1px solid #e5e9f5;
+        padding: 11px 15px;
+        background: white;
+        border-radius: 13px;
+        cursor: pointer;
+        color: #34415c;
+        font-family: inherit;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .language-switch:hover {
+        border-color: #536dff;
+    }
+
+    @media (max-width: 768px) {
+        .language-switch {
+            padding: 10px;
+            font-size: 12px;
+        }
+    }
+</style>
+
+
+<script>
+
+    const translations = {
+
+        ru: {
+            navHome: "Главная",
+            navOpportunities: "Возможности",
+            navHow: "Как работает",
+            navAbout: "Организациям",
+
+            login: "Войти",
+            register: "Регистрация ↗",
+
+            badge: "ПЛАТФОРМА ВОЗМОЖНОСТЕЙ",
+
+            heroTitle: "Один шаг — тысяча возможностей.",
+
+            heroDescription: "Найди стажировку, пройди практику, участвуй в волонтёрских проектах и помогай людям. Начни свой путь вместе с KADAM.",
+
+            heroButton: "Начать бесплатно ↗",
+            exploreButton: "Смотреть возможности →",
+
+            communityTitle: "Сообщество возможностей",
+            communitySubtitle: "Развивайся и помогай вместе с нами",
+
+            visualText: "Твой первый шаг к большим возможностям",
+            visualLabel: "РАЗВИВАЙСЯ • ПОМОГАЙ • ДЕЙСТВУЙ",
+
+            floatInternship: "Стажировки",
+            floatInternshipSmall: "Новый опыт",
+            floatVolunteer: "Волонтёрство",
+            floatVolunteerSmall: "Добрые дела",
+            floatHelp: "Помощь людям",
+            floatHelpSmall: "Поддержка рядом",
+
+            directionsLabel: "НАПРАВЛЕНИЯ",
+            directionsTitle: "Найди свою возможность",
+            directionsDescription: "Выбери то, что тебе действительно интересно.",
+
+            internshipLabel: "КАРЬЕРА",
+            internshipTitle: "Стажировки",
+            internshipDescription: "Получай профессиональный опыт и делай первые шаги в карьере.",
+
+            practiceLabel: "ОБРАЗОВАНИЕ",
+            practiceTitle: "Практика",
+            practiceDescription: "Найди место для учебной или производственной практики.",
+
+            volunteerLabel: "ДОБРЫЕ ДЕЛА",
+            volunteerTitle: "Волонтёрство",
+            volunteerDescription: "Участвуй в социальных проектах и делай мир лучше.",
+
+            helpLabel: "ПОДДЕРЖКА",
+            helpTitle: "Социальная помощь",
+            helpDescription: "Помогай нуждающимся и находи поддержку, когда она необходима.",
+
+            cardButton: "Присоединиться →",
+
+            howLabel: "ТВОЙ ПУТЬ",
+            howTitle: "Начать проще, чем кажется",
+
+            step1Title: "Создай профиль",
+            step1Description: "Зарегистрируйся и расскажи о себе.",
+
+            step2Title: "Выбери направление",
+            step2Description: "Найди подходящие возможности.",
+
+            step3Title: "Сделай первый шаг",
+            step3Description: "Начни развиваться и помогать другим.",
+
+            organizationLabel: "ДЛЯ ОРГАНИЗАЦИЙ",
+            organizationTitle: "Находите людей, которые помогут вашему делу.",
+            organizationDescription: "Размещайте возможности для студентов, приглашайте волонтёров и находите участников для своих инициатив.",
+            organizationButton: "Создать профиль организации ↗",
+
+            finalLabel: "НАЧНИ СЕГОДНЯ",
+            finalTitle: "Большие перемены начинаются с одного шага.",
+            finalDescription: "Открывай новые возможности и становись частью сообщества KADAM.",
+            finalButton: "Присоединиться к KADAM ↗",
+
+            footerDescription: "Один шаг — тысяча возможностей."
+        },
+
+        ky: {
+            navHome: "Башкы бет",
+            navOpportunities: "Мүмкүнчүлүктөр",
+            navHow: "Кантип иштейт",
+            navAbout: "Уюмдар үчүн",
+
+            login: "Кирүү",
+            register: "Катталуу ↗",
+
+            badge: "МҮМКҮНЧҮЛҮКТӨР ПЛАТФОРМАСЫ",
+
+            heroTitle: "Бир кадам — миң мүмкүнчүлүк.",
+
+            heroDescription: "Стажировка тап, практикадан өт, ыктыярчылык долбоорлорго катыш жана адамдарга жардам бер. KADAM менен өз жолуңду башта.",
+
+            heroButton: "Акысыз баштоо ↗",
+            exploreButton: "Мүмкүнчүлүктөрдү көрүү →",
+
+            communityTitle: "Мүмкүнчүлүктөр коомчулугу",
+            communitySubtitle: "Биз менен өнүк жана жардам бер",
+
+            visualText: "Чоң мүмкүнчүлүктөргө алгачкы кадамың",
+            visualLabel: "ӨНҮК • ЖАРДАМ БЕР • АРАКЕТТЕН",
+
+            floatInternship: "Стажировкалар",
+            floatInternshipSmall: "Жаңы тажрыйба",
+            floatVolunteer: "Ыктыярчылык",
+            floatVolunteerSmall: "Жакшы иштер",
+            floatHelp: "Адамдарга жардам",
+            floatHelpSmall: "Колдоо жаныңда",
+
+            directionsLabel: "БАГЫТТАР",
+            directionsTitle: "Өз мүмкүнчүлүгүңдү тап",
+            directionsDescription: "Өзүңө жаккан багытты танда.",
+
+            internshipLabel: "КАРЬЕРА",
+            internshipTitle: "Стажировкалар",
+            internshipDescription: "Кесиптик тажрыйба топтоп, карьераңа алгачкы кадам ташта.",
+
+            practiceLabel: "БИЛИМ БЕРҮҮ",
+            practiceTitle: "Практика",
+            practiceDescription: "Окуу же өндүрүштүк практикадан өтүүчү жерди тап.",
+
+            volunteerLabel: "ЖАКШЫ ИШТЕР",
+            volunteerTitle: "Ыктыярчылык",
+            volunteerDescription: "Коомдук долбоорлорго катышып, жакшы иштерди жаса.",
+
+            helpLabel: "КОЛДОО",
+            helpTitle: "Социалдык жардам",
+            helpDescription: "Жардамга муктаждарга көмөк көрсөт жана керектүү учурда колдоо тап.",
+
+            cardButton: "Кошулуу →",
+
+            howLabel: "СЕНИН ЖОЛУҢ",
+            howTitle: "Баштоо сен ойлогондон да оңой",
+
+            step1Title: "Профиль түз",
+            step1Description: "Катталып, өзүң жөнүндө маалымат бер.",
+
+            step2Title: "Багытты танда",
+            step2Description: "Өзүңө ылайыктуу мүмкүнчүлүктөрдү тап.",
+
+            step3Title: "Алгачкы кадамды жаса",
+            step3Description: "Өнүгүп, башкаларга жардам бере башта.",
+
+            organizationLabel: "УЮМДАР ҮЧҮН",
+            organizationTitle: "Ишиңизге салым кошо турган адамдарды табыңыз.",
+            organizationDescription: "Студенттер үчүн мүмкүнчүлүктөрдү жарыялаңыз, ыктыярчыларды чакырыңыз жана демилгелериңизге катышуучуларды табыңыз.",
+            organizationButton: "Уюмдун профилин түзүү ↗",
+
+            finalLabel: "БҮГҮН БАШТА",
+            finalTitle: "Чоң өзгөрүүлөр бир кадамдан башталат.",
+            finalDescription: "Жаңы мүмкүнчүлүктөрдү ачып, KADAM коомчулугуна кошул.",
+            finalButton: "KADAM'га кошулуу ↗",
+
+            footerDescription: "Бир кадам — миң мүмкүнчүлүк."
+        },
+
+        en: {
+            navHome: "Home",
+            navOpportunities: "Opportunities",
+            navHow: "How it works",
+            navAbout: "For organizations",
+
+            login: "Log in",
+            register: "Sign up ↗",
+
+            badge: "PLATFORM OF OPPORTUNITIES",
+
+            heroTitle: "One step. A thousand opportunities.",
+
+            heroDescription: "Discover internships, gain practical experience, join volunteer projects and help people. Start your journey with KADAM.",
+
+            heroButton: "Get started for free ↗",
+            exploreButton: "Explore opportunities →",
+
+            communityTitle: "A community of opportunities",
+            communitySubtitle: "Grow and make a difference together",
+
+            visualText: "Your first step toward great opportunities",
+            visualLabel: "GROW • HELP • TAKE ACTION",
+
+            floatInternship: "Internships",
+            floatInternshipSmall: "Real-world experience",
+            floatVolunteer: "Volunteering",
+            floatVolunteerSmall: "Good deeds",
+            floatHelp: "Help people",
+            floatHelpSmall: "Support nearby",
+
+            directionsLabel: "EXPLORE",
+            directionsTitle: "Find your opportunity",
+            directionsDescription: "Choose what truly interests you.",
+
+            internshipLabel: "CAREER",
+            internshipTitle: "Internships",
+            internshipDescription: "Build professional experience and take your first career steps.",
+
+            practiceLabel: "EDUCATION",
+            practiceTitle: "Practical training",
+            practiceDescription: "Find a place for academic or professional training.",
+
+            volunteerLabel: "GOOD DEEDS",
+            volunteerTitle: "Volunteering",
+            volunteerDescription: "Take part in social projects and make a difference.",
+
+            helpLabel: "SUPPORT",
+            helpTitle: "Social support",
+            helpDescription: "Support people in need and find help when you need it.",
+
+            cardButton: "Join now →",
+
+            howLabel: "YOUR JOURNEY",
+            howTitle: "Getting started is easier than you think",
+
+            step1Title: "Create your profile",
+            step1Description: "Sign up and tell us about yourself.",
+
+            step2Title: "Choose your path",
+            step2Description: "Find opportunities that match your interests.",
+
+            step3Title: "Take the first step",
+            step3Description: "Start growing and helping others.",
+
+            organizationLabel: "FOR ORGANIZATIONS",
+            organizationTitle: "Find people who can make a difference.",
+            organizationDescription: "Post opportunities for students, invite volunteers and connect with people who share your goals.",
+            organizationButton: "Create an organization profile ↗",
+
+            finalLabel: "START TODAY",
+            finalTitle: "Big changes begin with one step.",
+            finalDescription: "Discover new opportunities and become part of the KADAM community.",
+            finalButton: "Join KADAM ↗",
+
+            footerDescription: "One step. A thousand opportunities."
+        }
+    };
+
+    function setLanguage(language) {
+
+        if (!translations[language]) {
+            return;
+        }
+
+        localStorage.setItem("kadamLanguage", language);
+
+        document.documentElement.lang = language;
+
+        document.querySelectorAll("[data-i18n]").forEach(element => {
+
+            const key = element.getAttribute("data-i18n");
+
+            if (translations[language][key]) {
+                element.textContent = translations[language][key];
+            }
+
+        });
+
+        const labels = {
+            ru: "RU",
+            ky: "KG",
+            en: "EN"
+        };
+
+        document.getElementById("currentLanguage").textContent =
+            labels[language];
+
+        document.getElementById("languageOverlay")
+            .classList.add("hidden");
+
+    }
+
+    function showLanguageSelector() {
+
+        document.getElementById("languageOverlay")
+            .classList.remove("hidden");
+
+    }
+
+    function toggleMenu() {
+
+        const navigation = document.getElementById("navigation");
+        const button = document.getElementById("menuButton");
+
+        navigation.classList.toggle("active");
+
+        button.setAttribute(
+            "aria-expanded",
+            navigation.classList.contains("active")
+        );
+
+    }
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            document.getElementById("navigation")
+                .classList.remove("active");
+
+            document.getElementById("menuButton")
+                .setAttribute("aria-expanded", "false");
+
+        });
+
+    });
+
+    const savedLanguage = localStorage.getItem("kadamLanguage");
+
+    if (savedLanguage && translations[savedLanguage]) {
+
+        setLanguage(savedLanguage);
+
+    } else {
+
+        showLanguageSelector();
+
+    }
+
+</script>
+
+</body>
+</html>

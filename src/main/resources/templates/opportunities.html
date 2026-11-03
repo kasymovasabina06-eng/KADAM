@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Возможности — KADAM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="opportunities-page">
+
+<header class="opportunities-header">
+
+    <a href="/" class="opportunities-logo">
+        ✳ KADAM<span>.</span>
+    </a>
+
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/feed">Лента</a>
+        <a href="/opportunities">Возможности</a>
+        <a href="/dashboard">Профиль</a>
+    </nav>
+
+</header>
+
+<main class="opportunities-container">
+
+    <section class="opportunities-hero">
+
+        <span>✨ ВОЗМОЖНОСТИ НАЧИНАЮТСЯ ЗДЕСЬ</span>
+
+        <h1>
+            Найди свой
+            <span>следующий шаг.</span>
+        </h1>
+
+        <p>
+            Стажировки, практика, волонтёрство
+            и социальные инициативы в одном месте.
+        </p>
+
+        <a href="/opportunities/create"
+           class="opportunity-create-button">
+
+            + Создать объявление
+
+        </a>
+
+    </section>
+
+    <div th:if="${success}"
+         class="opportunity-alert success"
+         th:text="${success}">
+    </div>
+
+    <div th:if="${error}"
+         class="opportunity-alert error"
+         th:text="${error}">
+    </div>
+
+    <section class="opportunities-filters">
+
+        <a href="/opportunities">🌈 Все</a>
+
+        <a href="/opportunities?category=INTERNSHIP">
+            💼 Стажировки
+        </a>
+
+        <a href="/opportunities?category=PRACTICE">
+            🎓 Практика
+        </a>
+
+        <a href="/opportunities?category=VOLUNTEERING">
+            💜 Волонтёрство
+        </a>
+
+        <a href="/opportunities?category=SOCIAL_HELP">
+            🤝 Помощь
+        </a>
+
+    </section>
+
+    <section class="opportunities-list">
+
+        <div class="opportunities-section-heading">
+
+            <h2>Актуальные возможности</h2>
+
+            <p>Выбирай то, что подходит именно тебе.</p>
+
+        </div>
+
+        <div th:if="${#lists.isEmpty(opportunities)}"
+             class="opportunities-empty">
+
+            <span>🚀</span>
+
+            <h3>Возможности скоро появятся!</h3>
+
+            <p>
+                Пока здесь нет объявлений.
+                Организации смогут публиковать
+                свои предложения.
+            </p>
+
+        </div>
+
+        <div class="opportunity-grid">
+
+            <article class="opportunity-item"
+                     th:each="opportunity : ${opportunities}">
+
+                <div class="opportunity-item-top">
+
+                    <span class="opportunity-category"
+                          th:text="${opportunity.category == 'INTERNSHIP' ? '💼 Стажировка' : (opportunity.category == 'PRACTICE' ? '🎓 Практика' : (opportunity.category == 'VOLUNTEERING' ? '💜 Волонтёрство' : '🤝 Социальная помощь'))}">
+                        Стажировка
+                    </span>
+
+                    <span class="opportunity-id"
+                          th:text="'#' + ${opportunity.id}">
+                        #1
+                    </span>
+
+                </div>
+
+                <h3 th:text="${opportunity.title}">
+                    Название возможности
+                </h3>
+
+                <div class="opportunity-meta">
+
+                    <span>
+                        📍
+                        <span th:text="${opportunity.city}">
+                            Бишкек
+                        </span>
+                    </span>
+
+                    <span>
+                        🏢
+                        <span th:text="${opportunity.organizationEmail}">
+                            Организация
+                        </span>
+                    </span>
+
+                </div>
+
+                <p class="opportunity-description"
+                   th:text="${opportunity.description}">
+
+                    Описание возможности
+
+                </p>
+
+                <div class="opportunity-bottom">
+
+                    <span th:text="${#temporals.format(opportunity.createdAt, 'dd.MM.yyyy')}">
+                        30.10.2026
+                    </span>
+
+                    <form th:action="@{/opportunities/{id}/apply(id=${opportunity.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                class="opportunity-apply-button">
+
+                            Откликнуться ↗
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

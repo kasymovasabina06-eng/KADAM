@@ -1,0 +1,195 @@
+<!doctype html><html lang="ru" xmlns:th="http://www.thymeleaf.org"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Кабинет — ЖАВА</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body><div class="kadam-organization"
+                                                                                                                                                                                                                                                                    th:if="${user != null and user.role.name() == 'ORGANIZATION'}">
+
+    <aside class="kadam-sidebar">
+
+        <a href="/" class="kadam-brand">
+            <span class="brand-symbol">✳</span>
+            KADAM<span class="brand-dot">.</span>
+        </a>
+
+        <div class="kadam-sidebar-label">
+            РАБОЧЕЕ ПРОСТРАНСТВО
+        </div>
+
+        <nav class="kadam-sidebar-menu">
+
+            <a href="/dashboard/organization" class="active">
+                <span>▦</span>
+                Обзор
+            </a>
+
+            <a href="/feed">
+                <span>◉</span>
+                Социальная лента
+            </a>
+
+            <a href="/#directions">
+                <span>💼</span>
+                Стажировки
+            </a>
+
+            <a href="/#directions">
+                <span>💜</span>
+                Волонтёрство
+            </a>
+
+            <a href="/#directions">
+                <span>🤝</span>
+                Социальная помощь
+            </a>
+
+        </nav>
+
+        <div class="kadam-sidebar-bottom">
+
+            <div class="kadam-sidebar-card">
+                <span>✨</span>
+                <strong>Вместе создаём возможности</strong>
+                <p>
+                    Находите талантливых людей
+                    и делитесь своими инициативами.
+                </p>
+            </div>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="kadam-logout">
+                    Выйти из аккаунта →
+                </button>
+            </form>
+
+        </div>
+
+    </aside>
+
+    <main class="kadam-dashboard-main">
+
+        <header class="kadam-dashboard-header">
+
+            <div>
+                <span class="dashboard-eyebrow">ЛИЧНЫЙ КАБИНЕТ</span>
+
+                <h1>
+                    Добро пожаловать
+                    <span>в KADAM ✨</span>
+                </h1>
+
+                <p>
+                    Управляйте возможностями
+                    и развивайте своё сообщество.
+                </p>
+            </div>
+
+            <div class="dashboard-header-icon">
+                ✳
+            </div>
+
+        </header>
+
+        <section class="kadam-organization-profile">
+
+            <div class="organization-profile-icon">
+                🏢
+            </div>
+
+            <div>
+                <span>ПРОФИЛЬ ОРГАНИЗАЦИИ</span>
+
+                <h2 th:text="${user.fullName}">
+                    Название организации
+                </h2>
+
+                <p th:text="${user.city}">
+                    Бишкек
+                </p>
+            </div>
+
+            <div class="organization-profile-badge">
+                ✓ Аккаунт создан
+            </div>
+
+        </section>
+
+        <div class="kadam-dashboard-section-title">
+            <h2>Что хотите сделать сегодня?</h2>
+            <p>Выберите направление для работы.</p>
+        </div>
+
+        <section class="kadam-action-grid">
+
+            <a href="/feed" class="kadam-action-card action-blue">
+
+                <span class="action-card-icon">📢</span>
+
+                <span class="action-card-arrow">↗</span>
+
+                <h3>Поделиться новостью</h3>
+
+                <p>
+                    Расскажите сообществу
+                    о вашей организации и проектах.
+                </p>
+
+                <strong>Открыть ленту →</strong>
+
+            </a>
+
+            <a href="/#directions"
+               class="kadam-action-card action-purple">
+
+                <span class="action-card-icon">💜</span>
+
+                <span class="action-card-arrow">↗</span>
+
+                <h3>Волонтёрские проекты</h3>
+
+                <p>
+                    Знакомьтесь с направлением
+                    волонтёрства KADAM.
+                </p>
+
+                <strong>Посмотреть →</strong>
+
+            </a>
+
+            <a href="/#directions"
+               class="kadam-action-card action-orange">
+
+                <span class="action-card-icon">🤝</span>
+
+                <span class="action-card-arrow">↗</span>
+
+                <h3>Социальная помощь</h3>
+
+                <p>
+                    Узнайте, как организации
+                    смогут помогать людям.
+                </p>
+
+                <strong>Подробнее →</strong>
+
+            </a>
+
+        </section>
+
+        <section class="kadam-dashboard-info">
+
+            <div class="dashboard-info-icon">🚀</div>
+
+            <div>
+                <h3>Ваш следующий шаг начинается здесь</h3>
+
+                <p>
+                    Ваш профиль организации создан.
+                    Вы уже можете делиться новостями
+                    в социальной ленте KADAM.
+                </p>
+            </div>
+
+            <a href="/feed">Перейти в ленту ↗</a>
+
+        </section>
+
+    </main>
+
+</div><header class="header"><a class="brand" href="/">ЖАВА<span>●</span></a><nav><form th:action="@{/logout}" method="post"><button class="button small ghost" type="submit">Выйти</button></form></nav></header><main class="dashboard"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h1 th:text="${heading}">Кабинет</h1><p>Добро пожаловать, <strong th:text="${user.fullName}">Пользователь</strong>!</p><div class="info"><div><small>Категория</small><strong th:text="${user.role}"></strong></div><div><small>Электронная почта</small><strong th:text="${user.email}"></strong></div><div><small>Город</small><strong th:text="${user.city}"></strong></div></div><article class="placeholder"><h2>Аккаунт работает ✓</h2><p>Регистрация, вход, хранение данных в SQL Server и разделение личных кабинетов по ролям уже подключены. Публикации, отклики и сообщения — следующий этап разработки.</p></article></main></body></html>

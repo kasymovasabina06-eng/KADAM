@@ -1,0 +1,346 @@
+/* ==================================
+   KADAM — DESIGN SYSTEM
+================================== */
+
+:root {
+    --primary: #743ee8;
+    --primary-dark: #562ac2;
+    --primary-light: #eee6ff;
+
+    --background: #faf9ff;
+    --surface: #ffffff;
+    --text: #171538;
+    --muted: #7e7a96;
+    --border: #ece8f7;
+
+    --radius: 20px;
+    --shadow: 0 12px 35px rgba(77, 44, 147, .08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* SIDEBAR */
+
+.kadam-layout {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.kadam-sidebar {
+    background: white;
+    border-right: 1px solid var(--border);
+    padding: 32px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.kadam-logo {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    padding: 0 15px;
+}
+
+.kadam-logo span {
+    color: var(--primary);
+}
+
+.kadam-slogan {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 5px 15px 35px;
+}
+
+.kadam-menu {
+    display: grid;
+    gap: 8px;
+}
+
+.kadam-menu a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 17px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #68647e;
+    transition: .25s;
+}
+
+.kadam-menu a:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.kadam-menu a.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 8px 20px rgba(116, 62, 232, .2);
+}
+
+.kadam-sidebar-bottom {
+    margin-top: auto;
+    padding: 20px 15px;
+    border-top: 1px solid var(--border);
+}
+
+/* MAIN */
+
+.kadam-main {
+    padding: 28px 4%;
+    min-width: 0;
+}
+
+.kadam-topbar {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.kadam-search {
+    flex: 1;
+    max-width: 650px;
+    padding: 17px 22px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: white;
+    outline: none;
+    box-shadow: var(--shadow);
+}
+
+.kadam-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.kadam-icon-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    transition: .2s;
+}
+
+.kadam-icon-button:hover {
+    transform: translateY(-3px);
+    color: var(--primary);
+}
+
+/* BUTTONS */
+
+.kadam-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: none;
+    padding: 15px 24px;
+    border-radius: 14px;
+    font-weight: 800;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.kadam-btn-primary {
+    color: white;
+    background: linear-gradient(110deg, #743ee8, #a15cf0);
+    box-shadow: 0 10px 25px rgba(116, 62, 232, .22);
+}
+
+.kadam-btn-outline {
+    color: var(--primary);
+    background: white;
+    border: 1px solid #cdb8ff;
+}
+
+.kadam-btn:hover {
+    transform: translateY(-3px);
+}
+
+.kadam-btn:active {
+    transform: scale(.97);
+}
+
+/* CARDS */
+
+.kadam-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 25px;
+    transition: .3s;
+}
+
+.kadam-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(77, 44, 147, .13);
+}
+
+/* HERO */
+
+.kadam-hero {
+    min-height: 350px;
+    border-radius: 28px;
+    padding: 50px;
+    overflow: hidden;
+    background:
+            linear-gradient(90deg, #ffffff 0%, #ffffffeb 45%, #f0e8ff50 100%),
+            linear-gradient(130deg, #e9ddff, #faf8ff);
+    position: relative;
+}
+
+.kadam-hero h1 {
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1.15;
+    letter-spacing: -2px;
+    margin: 0 0 20px;
+    max-width: 660px;
+}
+
+.kadam-hero h1 span {
+    color: var(--primary);
+}
+
+.kadam-hero p {
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 520px;
+    margin-bottom: 25px;
+}
+
+/* CATEGORIES */
+
+.kadam-categories {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    margin: 28px 0;
+}
+
+.kadam-category {
+    text-align: center;
+    padding: 24px 12px;
+    border-radius: 18px;
+    background: white;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: .3s;
+}
+
+.kadam-category:hover {
+    transform: translateY(-7px);
+}
+
+.kadam-category-icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.kadam-category strong {
+    font-size: 12px;
+    display: block;
+}
+
+/* ANIMATIONS */
+
+.kadam-fade {
+    animation: kadamFade .6s ease both;
+}
+
+@keyframes kadamFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+    .kadam-categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .kadam-layout {
+        display: block;
+    }
+
+    .kadam-sidebar {
+        position: relative;
+        height: auto;
+    }
+
+    .kadam-main {
+        padding: 20px;
+    }
+
+    .kadam-topbar {
+        flex-wrap: wrap;
+    }
+
+    .kadam-search {
+        max-width: none;
+        width: 100%;
+    }
+
+    .kadam-hero {
+        padding: 30px;
+    }
+
+    .kadam-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
